@@ -21,6 +21,7 @@ import org.openmrs.PersonAttributeType;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mergeconcepts.api.MergeConceptsService;
+import org.openmrs.module.mergeconcepts.api.db.hibernate.HibernateMergeConceptsDAO;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 import java.util.List;
@@ -251,6 +252,19 @@ public class MergeConceptsServiceImplTest extends BaseModuleContextSensitiveTest
 
         Integer updatedDosageFormConceptIdInDrug = drug.getDosageForm().getConceptId();
         assertThat(updatedDosageFormConceptIdInDrug, is(8));
+    }
+
+    @Test
+    public void shouldUpdateProgramWorkflowState() {
+        Concept newConceptWithOutState = getConceptFromConceptId(9);
+        Concept oldConceptWithState = getConceptFromConceptId(10);
+        List<ProgramWorkflowState> expected = new HibernateMergeConceptsDAO().getProgramWorkflowStatesByConcept(oldConceptWithState);
+
+        mergeConceptsService.updateProgramStates(oldConceptWithState, newConceptWithOutState);
+        List<ProgramWorkflowState> actual = new HibernateMergeConceptsDAO().getProgramWorkflowStatesByConcept(newConceptWithOutState);
+
+        assertThat(expected, is(actual));
+
     }
 
 

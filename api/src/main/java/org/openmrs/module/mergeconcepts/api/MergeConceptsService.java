@@ -46,6 +46,8 @@ public interface MergeConceptsService extends OpenmrsService {
 
     public void updatePrograms(Concept oldConcept, Concept newConcept);
 
+    void updateProgramStates(Concept oldConcept, Concept newConcept);
+
     public void updateConceptSets(Concept oldConcept, Concept newConcept);
 
     public void updateConceptAnswers(Concept oldConcept, Concept newConcept);
